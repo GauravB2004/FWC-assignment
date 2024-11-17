@@ -9,14 +9,21 @@ const cors = require('cors');
 
 const allowedOrigins = [
   'http://localhost:5173', // Local frontend during development
-  'https://fwc-assignment.vercel.app', 
+  'https://fwc-assignment.vercel.app/', 
 ];
 
 app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-}));
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('CORS policy does not allow access from this origin'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  }));
 
 
 app.use(express.json());
