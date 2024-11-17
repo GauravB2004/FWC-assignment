@@ -7,6 +7,17 @@ const app = express();
 
 const cors = require('cors');
 
+const allowedOrigins = [
+  'http://localhost:5173', // Local frontend during development
+  'https://fwc-assignment.vercel.app', 
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
+
 
 app.use(express.json());
 app.use('/auth', authRoutes);
